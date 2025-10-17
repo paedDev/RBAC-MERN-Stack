@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Eye, EyeOff, ChevronDown, Mail, LockKeyhole, UserRound } from 'lucide-react';
 import axios from "axios";
 import { BASE_URL } from '../../config/config';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 const Register = () => {
   const navigate = useNavigate();
@@ -72,12 +72,12 @@ const Register = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md border p-10 rounded-xl border-gray-200 shadow-xl space-y-8">
 
-        <h2 className=" text-center text-2xl/9 font-bold tracking-tight text-black">Register an Account</h2>
+        <h2 className=" text-center text-2xl font-bold tracking-tight text-black">Register an Account</h2>
         <form action="#" onSubmit={handleSubmit} className="space-y-8">
           <div className='flex items-center justify-between gap-3'>
             <div className='relative group'>
               <label htmlFor="name" className=" text-sm/6 font-medium text-gray-800 flex items-center space-x-1 absolute -top-4 bg-white left-2 group-focus-within:-top-1 transition-all duration-500">
-                <div className='flex items-center group-focus-within:text-blue-800'>
+                <div className='flex items-center justify-center group-focus-within:text-blue-800'>
                   <UserRound size={15} />
                   <span className='px-1 ' >Name</span>
                 </div>
@@ -129,7 +129,7 @@ const Register = () => {
                     <span className='px-1 ' >Password</span>
                   </div>
                 </label>
-                <label htmlFor=""> Show password</label>
+
 
               </div>
             </div>
@@ -180,17 +180,18 @@ const Register = () => {
               className="flex w-full justify-center rounded-md border px-3 py-1.5 relative overflow-hidden border-gray-200 outline-1 outline-black/30 group cursor-pointer hover:outline-none transition-all duration-300"
             >
               <span className='absolute h-full left-0 w-0 group-hover:w-full bg-blue-400 transition-all duration-300 top-0'></span>
-              <span className='relative group-hover:text-gray-50 transition-colors duration-300 z-10'>Register</span>
+              <span className='relative group-hover:text-gray-50 transition-colors duration-300 z-10'>{
+                loading ? "Loading" : "Register"}</span>
             </button>
           </div>
 
         </form>
 
         <p className="mt-10 text-center text-sm/6 text-gray-400">
-          Not a member?{' '}
-          <a href="#" className="font-semibold text-indigo-400 hover:text-indigo-300">
-            Start a 14 day free trial
-          </a>
+          Already a member?{' '}
+          <Link to={'/login'} className="font-semibold text-indigo-400 hover:text-indigo-300">
+            Login
+          </Link>
         </p>
       </div>
     </div>
