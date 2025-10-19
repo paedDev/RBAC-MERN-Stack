@@ -23,6 +23,14 @@ body {
   .abs-center {
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
+  .group-label label {
+    top: -1.5rem; /* -top-6 default */
+  }
+
+  .group-label:focus-within label,
+  .group-label input:focus + label {
+    top: -0.75rem; /* -top-3 */
+  }
 }
 
 @layer components {

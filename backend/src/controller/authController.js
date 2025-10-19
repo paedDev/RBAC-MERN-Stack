@@ -5,12 +5,17 @@ import jwt from "jsonwebtoken";
 export const Register = async (req, res) => {
   const { name, email, password, role } = req.body;
   try {
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long" });
+    }
     const userExists = await User.findOne({
       email,
     });
     if (userExists) {
       return res.status(400).json({
-        message: "User already exists",
+        message: "Email already exists",
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -36,10 +41,10 @@ export const Register = async (req, res) => {
       data: userResponse,
     });
   } catch (error) {
-    res.status(500).json({
-      message: " Error in creating a new user",
-    });
-    console.log(`Error in creating a new user`, error);
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ message: messages.join(", ") });
+    }
   }
 };
 
@@ -87,6 +92,11 @@ export const Login = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    if (error.name === "ValidationError") {
+      const messages = Object.values(error.errors).map((err) => err.message);
+      return res.status(400).json({ message: messages.join(", ") });
+    }
+    res.status(500).json({ message: "Error in creating a new user" });
+    console.log("Error in login a new user", error);
   }
 };
