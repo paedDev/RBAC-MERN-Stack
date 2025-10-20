@@ -9,12 +9,11 @@ import Button from '../../components/Button.jsx';
 import InputField from '../../components/InputField.jsx';
 import PasswordField from '../../components/PasswordField.jsx';
 const Login = () => {
-  const { loading, setLoading, showPassword, handleSetShowPasword } = useAuth();
+  const { loading, setLoading, showPassword, handleSetShowPasword, login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
-  const navigate = useNavigate();
   const handleValueChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -31,11 +30,10 @@ const Login = () => {
         email,
         password
       });
-      console.log(response.data);
-      toast.success("Successfully Login an account");
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 2000);
+      const token = response.data.token;
+      const userData = response.data.user;
+      login(token, userData);
+      toast.success("Logged in successfully");
 
     } catch (error) {
       console.error(`Error Login`);

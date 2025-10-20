@@ -1,11 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-
+import { BASE_URL } from '../config/config.js';
+import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -13,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     setShowPassword((prev) => !prev);
   };
   const navigate = useNavigate();
-
+  // Save/remove token from localStorage
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -21,10 +24,24 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('token', token);
     }
   }, [token]);
+  // Save/remove user from localStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
-    navigate("/dashboard");
+    setTimeout(() => {
+      if (userData?.role === 'admin') {
+        navigate("/admin/dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    }, 100);
   };
   const logout = () => {
     setToken(null);
@@ -45,6 +62,7 @@ export const AuthProvider = ({ children }) => {
     navigate,
     isAuthenticated: Boolean(token)
   };
+
   return (
     <AuthContext.Provider value={value}>
       {children}
