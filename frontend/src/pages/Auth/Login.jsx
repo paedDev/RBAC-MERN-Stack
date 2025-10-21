@@ -30,6 +30,8 @@ const Login = () => {
         email,
         password
       });
+
+
       const token = response.data.token;
       const userData = response.data.user;
       login(token, userData);

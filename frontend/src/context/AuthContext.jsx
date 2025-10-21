@@ -5,10 +5,7 @@ import axios from 'axios';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [user, setUser] = useState(null);
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,13 +22,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
   // Save/remove user from localStorage
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user) {
+  //     localStorage.setItem('user', JSON.stringify(user));
+  //   } else {
+  //     localStorage.removeItem('user');
+  //   }
+  // }, [user]);
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
