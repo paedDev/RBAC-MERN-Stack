@@ -16,20 +16,43 @@ import {
 
 } from 'lucide-react';
 import Products from './pages/Products.jsx';
+import NotFound from './pages/NotFound.jsx';
+import { useAuth } from './context/AuthContext.jsx';
+import CreateProducts from './pages/Auth/CreateProducts.jsx';
 
 const App = () => {
+  const { user } = useAuth();
   const location = useLocation();
-  const hideNavbar = ['/login', '/register'].includes(location.pathname);
+  const showNavbar = ['/dashboard', '/admin/dashboard', '/products', '/orders', '/customers', '/analytics', '/settings', '/create-products'].includes(location.pathname);
+
+  const isAdmin = user?.role === 'admin';
+
   return (
     <div className='flex w-full min-h-screen'>
-      {!hideNavbar && (
+      {showNavbar && (
         <Navbar>
-          <SideBarItem icon={<LayoutDashboard />} text={"Dashboard"} active to={'/dashboard'} />
-          <SideBarItem icon={<Package />} text={"Products"} to={"/products"} />
-          <SideBarItem icon={<ShoppingCart />} text={"Orders"} />
-          <SideBarItem icon={<Users />} text={"Customers"} />
-          <SideBarItem icon={<BarChart3 />} text={"Analytics"} />
-          <SideBarItem icon={<Settings />} text={"Settings"} />
+          {
+            isAdmin ? (
+              <>
+                <SideBarItem icon={<LayoutDashboard />} text={"Dashboard"} to={'/dashboard'} />
+                <SideBarItem icon={<Package />} text={"Create Product"} to={"/create-products"} />
+
+                <SideBarItem icon={<ShoppingCart />} text={"Orders"} to={"/orders"} />
+                <SideBarItem icon={<Users />} text={"Customers"} to={"/customers"} />
+                <SideBarItem icon={<BarChart3 />} text={"Analytics"} to={"/analytics"} />
+
+              </>
+            ) : (
+              <>
+                <SideBarItem icon={<LayoutDashboard />} text="User Dashboard" to="/dashboard" />
+                <SideBarItem icon={<Package />} text={"Products"} to={"/products"} />
+                <SideBarItem icon={<ShoppingCart />} text="Orders" to="/orders" />
+              </>
+
+            )
+
+          }
+          <SideBarItem icon={<Settings />} text="Settings" to="/settings" />
         </Navbar>
       )}
       <main className='p-6  w-full overflow-auto'>
@@ -47,7 +70,17 @@ const App = () => {
             </ProtectedRoute>
           } />
           {/* Product Routes */}
-          <Route path='/products' element={<Products />} />
+          <Route path='/products' element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          } />
+          <Route path='/create-products' element={
+            <ProtectedRoute>
+              <CreateProducts />
+            </ProtectedRoute>
+          } />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
 

@@ -12,6 +12,11 @@ export const AuthProvider = ({ children }) => {
   const handleSetShowPasword = () => {
     setShowPassword((prev) => !prev);
   };
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpanded = () => {
+    setExpanded((prev) => !prev);
+  };
   const navigate = useNavigate();
   // Save/remove token from localStorage
   useEffect(() => {
@@ -22,13 +27,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
   // Save/remove user from localStorage
-  // useEffect(() => {
-  //   if (user) {
-  //     localStorage.setItem('user', JSON.stringify(user));
-  //   } else {
-  //     localStorage.removeItem('user');
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
@@ -57,7 +62,10 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     navigate,
-    isAuthenticated: Boolean(token)
+    isAuthenticated: Boolean(token),
+    expanded,
+    setExpanded,
+    handleExpanded
   };
 
   return (
