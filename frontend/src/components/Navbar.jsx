@@ -26,7 +26,7 @@ const Navbar = ({ children }) => {
         <div className='flex space-x-2 items-center '>
           <img src="/images/Logo.png" alt="" className='size-8' />
           <div className='flex items-center space-x-6 '>
-            <div className={`${expanded ? 'hidden  ' : "text-xs"}`}>
+            <div className={`${expanded ? 'hidden' : "text-xs"}`}>
               <h4>John Doe</h4>
               <span className='text-gray-600'>JohnDoe@gmail.com</span>
             </div>
