@@ -2,7 +2,7 @@ import React from 'react';
 import { Package, FileText, DollarSign, Tag, Image, PackageCheck } from "lucide-react";
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import axiosInstance from '../../config/axiosConfig';
 import toast from 'react-hot-toast';
 import { BASE_URL } from '../../config/config';
@@ -153,10 +153,12 @@ const CreateProducts = () => {
         </div>
 
         <div className='flex justify-end space-x-2 items-center'>
-          <button className='px-4 py-2 bg-green-400 text-white text-md rounded-lg'>
+          <button type='submit' className='px-4 py-2 bg-green-400 text-white text-md rounded-lg'>
             Submit
           </button>
-          <button className='px-4 py-2 bg-gray-400 text-white text-md rounded-lg'>Cancel</button>
+          <Link to={'/products'}>
+            <button type='button' className='px-4 py-2 bg-gray-400 text-white text-md rounded-lg'>Cancel</button>
+          </Link>
         </div>
       </form>
     </section>
