@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ChevronFirst, EllipsisVertical, ChevronLast } from 'lucide-react';
+import { ChevronFirst, EllipsisVertical, ChevronLast, UserRoundPen, DeleteIcon, LogOutIcon, Settings2, Settings } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 const Navbar = ({ children }) => {
-  const { expanded, setExpanded, handleExpanded } = useAuth();
+  const [open, setOpen] = useState(false);
+  const { expanded, setExpanded, handleExpanded, logout, user } = useAuth();
   return (
     <aside className='min-h-screen'>
       <nav className={`flex flex-col justify-between  border-r border-gray-200 shadow-xl h-full p-4  ${expanded ? "w-20" : "w-64"} transition-all duration-500 ease-in-out`}>
@@ -23,14 +24,54 @@ const Navbar = ({ children }) => {
 
 
         {/* bottom part */}
-        <div className='flex space-x-2 items-center '>
+        <div className='flex gap-2 items-center relative w-full'>
           <img src="/images/Logo.png" alt="" className='size-8' />
-          <div className='flex items-center space-x-6 '>
+          <div className='flex items-center gap-2 w-full justify-between'>
             <div className={`${expanded ? 'hidden' : "text-xs"}`}>
-              <h4>John Doe</h4>
-              <span className='text-gray-600'>JohnDoe@gmail.com</span>
+              <h4>{user.name}</h4>
+              <span className='text-gray-600'>{user.email}</span>
             </div>
-            <EllipsisVertical className='text-sm' />
+
+            <button onClick={() => setOpen((prev) => !prev)} className='relative inline-block'>
+              <Settings className='size-5' />
+            </button>
+            {open && (
+              <div className={`bottom-10 mt-2  bg-white border-rounded  z-10 text-xs ${expanded ? "absolute -left-1 bottom-15" : " absolute left-[30%]"}`}>
+                <button
+                  onClick=''
+                  className="w-full px-4 py-2  hover:bg-gray-100  "
+                >
+                  {
+                    expanded ? (
+                      <UserRoundPen size={20} />
+                    ) : (
+                      <div className='flex items-center space-x-2'>
+                        <UserRoundPen size={20} />
+                        <span>Edit Profile</span>
+                      </div>
+                    )
+                  }
+                </button>
+                <button
+                  onClick={logout}
+                  className="w-full px-4 py-2 hover:bg-gray-100 "
+                >
+                  {
+                    expanded ? (
+                      <LogOutIcon size={20} />
+                    ) : (
+                      <div className='flex items-center space-x-2'>
+                        <LogOutIcon size={20} />
+                        <span>Logout</span>
+                      </div>
+
+                    )
+                  }
+
+                </button>
+              </div>
+            )}
+
           </div>
 
         </div>

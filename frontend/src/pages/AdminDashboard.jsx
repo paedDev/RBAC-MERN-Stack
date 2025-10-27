@@ -25,7 +25,7 @@ const AdminDashboard = () => {
         {/* More admin stats */}
       </div>
 
-      <button onClick={logout}>Logout</button>
+
     </div>
   );
 };

@@ -34,8 +34,8 @@ const App = () => {
           {
             isAdmin ? (
               <>
-                <SideBarItem icon={<LayoutDashboard />} text={"Dashboard"} to={'/dashboard'} />
-                <SideBarItem icon={<Package />} text={"Create Product"} to={"/create-products"} />
+                <SideBarItem icon={<LayoutDashboard />} text={"Admin Dashboard"} to={'/admin/dashboard'} />
+                <SideBarItem icon={<Package />} text={"Products"} to={"/products"} />
 
                 <SideBarItem icon={<ShoppingCart />} text={"Orders"} to={"/orders"} />
                 <SideBarItem icon={<Users />} text={"Customers"} to={"/customers"} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Package, FileText, DollarSign, Tag, Image, PackageCheck } from "lucide-react";
+import { Package, FileText, DollarSign, Tag, Image, PackageCheck, PhilippinePeso } from "lucide-react";
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -26,7 +26,7 @@ const CreateProducts = () => {
       const response = await axiosInstance.post(`${BASE_URL}/api/product`, {
         name, description, stock, image, price, category
       });
-      navigate("/admin/dashboard");
+      navigate("/products");
       console.log(response);
       toast.success("Product created Successfully");
 
@@ -101,7 +101,7 @@ const CreateProducts = () => {
         <div className='lg:flex lg:flex-row flex-col lg:space-y-0 space-y-2 justify-around lg:space-x-4'>
           <div className='lg:w-full space-y-2'>
             <div className='flex space-x-2'>
-              <DollarSign />
+              <PhilippinePeso />
               <label htmlFor="price">Price</label>
             </div>
             <input type="number" className='border rounded p-2 w-full' name='price' id='price' required
@@ -113,7 +113,7 @@ const CreateProducts = () => {
               <Tag />
               <label htmlFor="category">Category</label>
             </div>
-            <select type="text" className='border rounded p-2 w-full' name='category' id='category' required
+            <select className='border rounded p-2 w-full' name='category' id='category' required
               onChange={handleChangeValue}
               value={formData.category}>
               <option value="" disabled>
