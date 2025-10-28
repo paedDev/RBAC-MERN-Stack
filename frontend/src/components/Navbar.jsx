@@ -33,7 +33,7 @@ const Navbar = ({ children }) => {
             </div>
 
             <button onClick={() => setOpen((prev) => !prev)} className='relative inline-block'>
-              <Settings className='size-5' />
+              <EllipsisVertical className='size-5' />
             </button>
             {open && (
               <div className={`bottom-10 mt-2  bg-white border-rounded  z-10 text-xs ${expanded ? "absolute -left-1 bottom-15" : " absolute left-[30%]"}`}>

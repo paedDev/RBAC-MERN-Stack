@@ -6,7 +6,7 @@ export const createProduct = async (req, res) => {
   try {
     if (req.user.role !== "admin") {
       return res.status(403).json({
-        message: "Access denied",
+        message: "Access denied. Admin privileges required.",
       });
     }
     // there is two way to create
@@ -26,6 +26,12 @@ export const createProduct = async (req, res) => {
       data: savedProduct,
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
     res.status(500).json({
       message: "Server error",
       erorr: error.message,
@@ -61,6 +67,12 @@ export const getProductById = async (req, res) => {
       });
     }
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
     res.status(500).json({
       message: error.message,
     });
@@ -72,7 +84,20 @@ export const updateProduct = async (req, res) => {
   const { name, description, price, category, image, stock } = req.body;
   if (req.user.role !== "admin") {
     return res.status(403).json({
-      message: "Access denied",
+      message: "Access denied. Admin privileges required.",
+    });
+  }
+
+  if (
+    !name &&
+    !description &&
+    !price &&
+    !category &&
+    !image &&
+    stock === undefined
+  ) {
+    return res.status(400).json({
+      message: "At least one field must be provided for update",
     });
   }
   const id = req.params.id;
@@ -97,6 +122,12 @@ export const updateProduct = async (req, res) => {
     }
     res.json({ message: "Product updated successfully", data: product });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
@@ -106,7 +137,9 @@ export const deleteProduct = async (req, res) => {
   const id = req.params.id;
   try {
     if (req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied. Admin only." });
+      return res
+        .status(403)
+        .json({ message: "Access denied. Admin privileges required." });
     }
     const product = await Product.findByIdAndDelete(id);
     if (!product) {
@@ -116,6 +149,12 @@ export const deleteProduct = async (req, res) => {
       message: "Product deleted successfully",
     });
   } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

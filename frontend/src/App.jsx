@@ -19,11 +19,24 @@ import Products from './pages/Products.jsx';
 import NotFound from './pages/NotFound.jsx';
 import { useAuth } from './context/AuthContext.jsx';
 import CreateProducts from './pages/Auth/CreateProducts.jsx';
+import UpdateProduct from './pages/Auth/UpdateProduct.jsx';
+import ViewProduct from './pages/ViewProduct.jsx';
 
 const App = () => {
   const { user } = useAuth();
   const location = useLocation();
-  const showNavbar = ['/dashboard', '/admin/dashboard', '/products', '/orders', '/customers', '/analytics', '/settings', '/create-products'].includes(location.pathname);
+  const showNavbar =
+    location.pathname === '/dashboard' ||
+    location.pathname === '/admin/dashboard' ||
+    location.pathname === '/products' ||
+    location.pathname === '/orders' ||
+    location.pathname === '/customers' ||
+    location.pathname === '/analytics' ||
+    location.pathname === '/settings' ||
+    location.pathname === '/create-products' ||
+    location.pathname.startsWith('/update-products/');
+  location.pathname.startsWith('/products/');
+
 
   const isAdmin = user?.role === 'admin';
 
@@ -80,6 +93,12 @@ const App = () => {
               <CreateProducts />
             </ProtectedRoute>
           } />
+          <Route path='/update-product/:id' element={
+            <ProtectedRoute>
+              <UpdateProduct />
+            </ProtectedRoute>
+          } />
+          <Route path='/product/:id' element={<ViewProduct />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </main>
