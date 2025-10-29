@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from '../config/axiosConfig';
 import { BASE_URL } from '../config/config';
 import toast from 'react-hot-toast';
+import { useMediaQuery } from 'react-responsive';
 const Products = () => {
   const { loading, setLoading, user } = useAuth();
   const [products, setProducts] = useState([]);
@@ -22,6 +23,9 @@ const Products = () => {
     'sports',
     'other',
   ];
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isDesktop = useMediaQuery({ minWidth: 768 });
+
   const isAdmin = user?.role === "admin";
   const fetchProducts = async (e) => {
     try {
@@ -207,22 +211,42 @@ const Products = () => {
                   </div>
                 </div>
                 {/* Actions */}
-                <div className='px-4 pb-4'>
+                <div className=''>
                   {
                     isAdmin ? (
                       <div className='flex gap-2 p-2'>
                         <Link to={`/update-product/${product._id}`} className='flex-1'>
                           <button className='w-full bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors'>
-                            <Edit className='w-4 h-4' />
-                            Edit
+                            {
+                              isMobile && <Edit className='w-4 h-4' />
+
+                            }
+                            {
+                              isDesktop && <div className='flex items-center space-x-2'>
+                                <Edit className='w-4 h-4' />
+                                <span className='text-xs'>Edit</span>
+                              </div>
+                            }
+
+
                           </button>
                         </Link>
                         <button
                           onClick={() => handleDelete(product._id)}
                           className='flex-1 bg-red-50 hover:bg-red-100 text-red-600 px-3 py-2 rounded-lg flex items-center justify-center gap-2 transition-colors'
                         >
-                          <Trash2 className='w-4 h-4' />
-                          <span className='text-xs'>Delete</span>
+                          {
+                            isMobile && <Trash2 className='w-4 h-4' />
+
+                          }
+                          {
+                            isDesktop && <div className='flex items-center space-x-2'>
+                              <Trash2 className='w-4 h-4' />
+                              <span className='text-xs'>Delete</span>
+                            </div>
+                          }
+
+
                         </button>
                       </div>
                     ) : (
@@ -238,8 +262,18 @@ const Products = () => {
                           onClick={() => handleViewDetails(product._id)}
                           className='flex-1 bg-green-50 hover:bg-green-100 text-green-600 px-3  rounded-lg flex items-center justify-center gap-2 transition-colors'
                         >
-                          <span className='text-xs'>View</span>
 
+                          {
+                            isMobile && <Eye className='size-4'></Eye>
+
+                          }
+                          {
+                            isDesktop && <div className='flex items-center space-x-2'>
+
+                              <Eye className='size-4'></Eye>
+                              <span className='text-xs'>View</span>
+                            </div>
+                          }
                         </button>
                       </div>
                     )

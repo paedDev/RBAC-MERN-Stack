@@ -34,8 +34,8 @@ const App = () => {
     location.pathname === '/analytics' ||
     location.pathname === '/settings' ||
     location.pathname === '/create-products' ||
-    location.pathname.startsWith('/update-products/');
-  location.pathname.startsWith('/products/');
+    location.pathname.startsWith('/update-products/') ||
+    location.pathname.startsWith('/product/');
 
 
   const isAdmin = user?.role === 'admin';
