@@ -1,12 +1,12 @@
 // pages/AdminDashboard.jsx
-import { useAuth } from '../context/AuthContext';
-import { Navigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
 
   // Redirect non-admins
-  if (user?.role !== 'admin') {
+  if (user?.role !== "admin") {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -24,8 +24,6 @@ const AdminDashboard = () => {
         </div>
         {/* More admin stats */}
       </div>
-
-
     </div>
   );
 };

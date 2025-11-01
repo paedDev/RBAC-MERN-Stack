@@ -1,15 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL } from '../config/config.js';
-import axios from 'axios';
+import { BASE_URL } from "../config/config.js";
+import axios from "axios";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const handleSetShowPasword = () => {
@@ -24,24 +24,24 @@ export const AuthProvider = ({ children }) => {
   // Save/remove token from localStorage
   useEffect(() => {
     if (token) {
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
     } else {
-      localStorage.removeItem('token', token);
+      localStorage.removeItem("token", token);
     }
   }, [token]);
   // Save/remove user from localStorage
   useEffect(() => {
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     } else {
-      localStorage.removeItem('user');
+      localStorage.removeItem("user");
     }
   }, [user]);
   const login = (newToken, userData) => {
     setToken(newToken);
     setUser(userData);
     setTimeout(() => {
-      if (userData?.role === 'admin') {
+      if (userData?.role === "admin") {
         navigate("/admin/dashboard", { replace: true });
       } else {
         navigate("/dashboard", { replace: true });
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setUser(null);
     localStorage.removeItem("token");
-    navigate('/login');
+    navigate("/");
   };
   const value = {
     user,
@@ -68,13 +68,9 @@ export const AuthProvider = ({ children }) => {
     isAuthenticated: Boolean(token),
     expanded,
     setExpanded,
-    handleExpanded
+    handleExpanded,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 export const useAuth = () => useContext(AuthContext);

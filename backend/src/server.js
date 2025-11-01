@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import { connectDb } from "./config/db.js";
-import AuthRoutes from "./routes/AuthRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 dotenv.config();
@@ -24,7 +24,7 @@ app.get("/hello", (req, res) => {
   res.send("hello");
   // testing purposes
 });
-app.use("/api/auth", AuthRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/product", productRoutes);
 connectDb().then(() => {

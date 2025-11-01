@@ -6,12 +6,12 @@ import {
   getProductById,
   updateProduct,
 } from "../controller/productController.js";
-import verifyToken from "../middleware/auth.js";
+import verifyToken, { verifyAdmin } from "../middleware/auth.js";
 const router = express.Router();
 
-router.get("/", getAllProducts);
-router.get("/:id", getProductById);
-router.post("/", verifyToken, createProduct);
-router.put("/:id", verifyToken, updateProduct);
-router.delete("/:id", verifyToken, deleteProduct);
+router.get("/", verifyToken, getAllProducts);
+router.get("/:id", verifyToken, getProductById);
+router.post("/", verifyToken, verifyAdmin, createProduct);
+router.put("/:id", verifyToken, verifyAdmin, updateProduct);
+router.delete("/:id", verifyToken, verifyAdmin, deleteProduct);
 export default router;

@@ -100,3 +100,95 @@ export const Login = async (req, res) => {
     console.log("Error in login a new user", error);
   }
 };
+
+export const GetAllUser = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Admin privileges required." });
+    }
+    const User = await User.find().select("-password");
+
+    res.status(200).json({
+      message: "Users retrieved successfully",
+      data: User,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error getting all users",
+      error: error.message,
+    });
+  }
+};
+export const UpdateUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  const id = req.params.id;
+  try {
+    if (!name && !email && !password) {
+      return res.status(404).json({
+        message: "At least one field must be provided for update",
+      });
+    }
+    if (req.user.id !== id && req.user.role !== "admin") {
+      return res.status(403).json({
+        message: "Access denied. You can only update your own account.",
+      });
+    }
+    const UpdatedUser = await User.findByIdAndUpdate(
+      id,
+      {
+        name,
+        email,
+        password,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    if (!UpdatedUser) {
+      return res.status(500).json({
+        message: "User not found",
+      });
+    }
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const DeleteUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Admin privileges required." });
+    }
+    const DeleteUser = await User.findByIdAndDelete(id);
+    if (!DeleteUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({
+      message: "User deleted successfully",
+      data: {
+        id: deletedUser._id,
+        email: deletedUser.email,
+      },
+    });
+  } catch (error) {
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
+        message: "Validation error",
+        error: error.message,
+      });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
