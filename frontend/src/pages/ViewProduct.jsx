@@ -37,6 +37,8 @@ const ViewProduct = () => {
   if (loading) {
 
   }
+  const isOutOfStock = product.stock === 0;
+  const isLowStock = product.stock > 0 && product.stock < 10;
   return (
     <section className='min-h-screen p-6 '>
       <button
@@ -54,13 +56,13 @@ const ViewProduct = () => {
               className='rounded-xl shadow-xl object-cover w-full h-auto' />
 
             {
-              product.stock === 0 && (
+              isOutOfStock && (
                 <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">
                   Out of Stock
                 </div>)
             }
             {
-              product.stock > 0 && product.stock < 10 && (
+              isLowStock && (
                 <div className="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-semibold">
                   Low Stock
                 </div>
@@ -69,11 +71,13 @@ const ViewProduct = () => {
           </div>
 
           {/* Product Details */}
-          <div className='space-y-10 flex flex-col justify-around '>
+          <div className=' flex flex-col justify-around '>
             <div className='space-y-10'>
               <button className='bg-blue-200 rounded-lg px-2 py1 text-blue-700 flex items-center gap-1.5'>
                 <Tag size={18} />
-                {product.category.charAt(0).toUpperCase() + product.category.slice(1)}</button>
+                {product.category?.charAt(0).toUpperCase() + product.category?.slice(1)}
+
+              </button>
               <h1 className='mb-4 text-3xl font-bold'>{product.name}</h1>
               <p className='text-2xl font-semibold text-blue-600 mb-4'>
                 ₱{Number(product.price).toLocaleString('en-PH', {
@@ -98,8 +102,15 @@ const ViewProduct = () => {
                   <span> Add to Cart</span>
                 </button>
               </div>
+
             </div>
+            {isLowStock && !isOutOfStock && (
+              <p className='text-sm text-orange-600 text-center'>
+                Hurry! Only {product.stock} left in stock
+              </p>
+            )}
           </div>
+
 
 
         </div>
