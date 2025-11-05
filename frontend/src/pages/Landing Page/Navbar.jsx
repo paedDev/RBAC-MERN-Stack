@@ -18,14 +18,14 @@ const Navbar = () => {
   console.log(isOpen);
 
   return (
-    <nav className="h-25  w-full relative ">
-      <div className="flex items-center justify-between h-full p-6 max-w-7xl mx-auto">
+    <nav className="h-24 w-full left-0 fixed top-0 shadow-lg z-50 overflow-hidden ">
+      <div className="flex items-center justify-between h-full p-6 max-w-7xl mx-auto relative">
         {/* Company Nmae or logo  */}
 
         {isMobile && (
           <div className=" flex items-center flex-1">
             <button onClick={handleIsMenuOpen} className="mr-2">
-              {isOpen ? <Menu /> : <X />}
+              {isOpen ? <X /> : <Menu />}
             </button>
           </div>
         )}
@@ -42,17 +42,17 @@ const Navbar = () => {
         {/* Navigation  */}
         <div className="flex items-center space-x-6 flex-1 justify-end">
           {isDesktop && (
-            <div className="flex space-x-6 items-center font-medium">
-              <a href="" className="text-yellow-700">
+            <div className="flex space-x-6 items-center font-medium uppercase ">
+              <a href="" className="bg-gradient-to-r from-yellow-300 to-yellow-600 bg-clip-text text-transparent ">
                 NEW ARRIVALS
               </a>
-              <a href="">ELECTRONICS</a>
+              <a href="" className={``}>ELECTRONICS</a>
               <a href="">FOODS</a>
               <a href="">CLOTHING</a>
               <a href="">BOOKS</a>
               <a href="">TOYS</a>
               <a href="">SPORTS</a>
-              <a href="" className="text-red-900">
+              <a href="" className="bg-gradient-to-r from-yellow-300 to-yellow-600 bg-clip-text text-transparent ">
                 SALE
               </a>
             </div>
@@ -70,7 +70,7 @@ const Navbar = () => {
 
       {isMobile && (
         <div
-          className={`w-full absolute top-20 left-0 overflow-hidden transition-all duration-900 p-6 ease-in-out
+          className={`w-full fixed top-24 bg-white left-0 overflow-hidden transition-all duration-900 p-6 ease-in-out
       ${isOpen ? "-translate-x-full" : "translate-x-0"}`}
         >
           <div className="flex flex-col space-y-4 items-center font-medium justify-center">
